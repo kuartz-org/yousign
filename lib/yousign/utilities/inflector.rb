@@ -8,7 +8,7 @@ module Yousign
       return camel_cased_word.to_s unless /[A-Z-]|::/.match?(camel_cased_word)
 
       word = camel_cased_word.to_s.gsub("::", "/")
-      word.gsub!(/([A-Z]+)(?=[A-Z][a-z])|([a-z\d])(?=[A-Z])/) { (Regexp.lastmatch(1) || Regexp.lastmatch(2)) << "_" }
+      word.gsub!(/([A-Z]+)(?=[A-Z][a-z])|([a-z\d])(?=[A-Z])/) { (Regexp.last_match(1) || Regexp.last_match(2)) << "_" }
       word.tr!("-", "_")
       word.downcase!
       word
