@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require "uri"
+require "net/http"
+require "base64"
+require "json"
+
 module Yousign
   class APIRequest
     extend Inflector

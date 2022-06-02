@@ -17,4 +17,8 @@ end
 
 require "yousign/utilities/inflector"
 require "yousign/utilities/api_request"
-require "yousign/file"
+require "yousign/models/api_resource"
+require "yousign/models/file"
+require "yousign/models/member"
+require "yousign/models/file_object"
+require "yousign/models/procedure"

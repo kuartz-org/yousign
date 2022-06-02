@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
-require "uri"
-require "json"
-require "net/http"
-require "base64"
-require "time"
-
 module Yousign
-  class File
+  class File < APIResource
     attr_reader :id,
                 :name,
                 :type,
@@ -25,6 +19,7 @@ module Yousign
                 :company
 
     def initialize(filename:, file:)
+      super()
       @filename = filename
       @content = ::File.read(file)
     end
