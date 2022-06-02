@@ -3,43 +3,49 @@
 module Yousign
   class Procedure < APIResource
     attr_reader :id,
-                :name,
-                :description,
-                :status,
-                :creator,
+                :config,
                 :creator_first_name,
                 :creator_last_name,
-                :workspace,
-                :template,
+                :creator,
+                :description,
+                :metadata,
+                :name,
                 :ordered,
                 :parent,
-                :metadata,
-                :config,
-                :members
+                :status,
+                :template,
+                :workspace
 
-    def initialize(name:, description: "", members: [])
+    def self.find(id)
+      attributes = APIRequest.get(id)
+      instance = new
+      attributes.each do |key, value|
+        instance.instance_variable_set("@#{key}", value)
+      end
+      instance
+    end
+
+    def initialize(api_request_body = {})
       super()
-      @name = name
-      @description = description
-      @members = members
+      @api_request_body = api_request_body
     end
 
-    def create
-      APIRequest.post("/procedures", to_hash)
+    def create!
+      attributes = APIRequest.post("/procedures", @api_request_body)
+
+      attributes.each do |key, value|
+        instance_variable_set("@#{key}", value)
+      end
+
+      self
     end
 
-    # def finished_at
-    # end
+    def members
+      @members.map { |member| Member.new(member) }
+    end
 
-    # def expires_at
-    # end
-
-    def to_hash
-      {
-        name: name,
-        description: description,
-        members: members.map(&:to_hash)
-      }
+    def files
+      @files.map { |file| File.new(file) }
     end
   end
 end

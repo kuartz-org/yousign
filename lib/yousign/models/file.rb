@@ -11,43 +11,26 @@ module Yousign
                 :metadata,
                 :workspace,
                 :creator,
-                :file_objects,
                 :protected,
                 :position,
                 :parent,
                 :fields_compatible,
                 :company
 
-    def initialize(filename:, file:)
-      super()
-      @filename = filename
-      @content = ::File.read(file)
+    def self.upload(filename:, file:)
+      content = ::File.read(file)
+      attributes = APIRequest.post("/files", { name: filename, content: Base64.strict_encode64(content) })
+
+      new(attributes)
     end
 
-    def upload!
-      attributes = APIRequest.post("files", { name: filename, content: Base64.strict_encode64(content) })
-
-      attributes.each do |key, value|
-        instance_variable_set("@#{key}", value)
-      end
-
-      self
+    def file_objects
+      @file_objects.map { |file_object| FileObject.new(file_object) }
     end
 
-    def created_at
-      Time.parse(@created_at) if @created_at
+    def binary
+      base64_encoded_file = APIRequest.get("#{id}/download")
+      Base64.strict_decode64(base64_encoded_file)
     end
-
-    def updated_at
-      Time.parse(@updated_at) if @updated_at
-    end
-
-    def inspect
-      "<##{self.class} #{filename} >"
-    end
-
-    private
-
-    attr_reader :filename, :content
   end
 end
