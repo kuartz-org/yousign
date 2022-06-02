@@ -15,7 +15,6 @@ module Yousign
   end
 end
 
-require "yousign/utilities/inflector"
 require "yousign/utilities/api_request"
 require "yousign/models/api_resource"
 require "yousign/models/file"
