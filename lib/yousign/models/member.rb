@@ -1,25 +1,28 @@
 # frozen_string_literal: true
 
 module Yousign
-  class Member
-    attr_reader :first_name, :last_name, :email, :phone, :file_objects
+  class Member < APIResource
+    attr_reader :id,
+                :comment,
+                :contact,
+                :email,
+                :fields,
+                :firstname,
+                :lastname,
+                :notifications_email,
+                :operation_custom_modes,
+                :operation_level,
+                :operation_mode_email_config,
+                :operation_mode_sms_config,
+                :parent,
+                :phone,
+                :position,
+                :status,
+                :type,
+                :user
 
-    def initialize(first_name:, last_name:, email:, phone:, file_objects: [])
-      @first_name = first_name
-      @last_name = last_name
-      @email = email
-      @phone = phone
-      @file_objects = file_objects
-    end
-
-    def to_hash
-      {
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        phone: phone,
-        file_objects: file_objects.map(&:to_hash)
-      }
+    def file_objects
+      @file_objects.map { |file_object| FileObject.new(file_object) }
     end
   end
 end
