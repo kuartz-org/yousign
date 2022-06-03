@@ -4,6 +4,10 @@ require "time"
 
 module Yousign
   class APIResource
+    def self.find(id)
+      new APIRequest.get(id)
+    end
+
     def initialize(attributes = {})
       attributes.each do |key, value|
         instance_variable_set("@#{key}", value)

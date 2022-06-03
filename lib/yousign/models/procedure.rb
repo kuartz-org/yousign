@@ -20,10 +20,6 @@ module Yousign
       def create(api_request_body)
         new APIRequest.post("/procedures", api_request_body)
       end
-
-      def find(id)
-        new APIRequest.get(id)
-      end
     end
 
     def members
