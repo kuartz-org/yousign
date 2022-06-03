@@ -1,30 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Yousign::Procedure do
-  let(:procedure) do
-    Yousign::Procedure.new(
-      name: "My first procedure",
-      description: "Awesome! Here is the description of my first procedure",
-      members: [
-        {
-          firstname: "John",
-          lastname: "Doe",
-          email: "john.doe@yousign.fr",
-          phone: "+33612345678",
-          file_objects: [
-            {
-              file: "/files/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-              page: 2,
-              position: "230,499,464,589",
-              mention: "Read and approved",
-              mention2: "Signed by John Doe"
-            }
-          ]
-        }
-      ]
-    )
-  end
-
   let(:mocked_api_request) { class_double(Yousign::APIRequest).as_stubbed_const }
 
   let(:api_response) do
@@ -131,14 +107,37 @@ RSpec.describe Yousign::Procedure do
     allow(mocked_api_request).to receive(:post).and_return(api_response)
   end
 
-  describe "#create!" do
+  describe ".create" do
+    let(:response) do
+      Yousign::Procedure.create(
+        name: "My first procedure",
+        description: "Awesome! Here is the description of my first procedure",
+        members: [
+          {
+            firstname: "John",
+            lastname: "Doe",
+            email: "john.doe@yousign.fr",
+            phone: "+33612345678",
+            file_objects: [
+              {
+                file: "/files/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+                page: 2,
+                position: "230,499,464,589",
+                mention: "Read and approved",
+                mention2: "Signed by John Doe"
+              }
+            ]
+          }
+        ]
+      )
+    end
+
     it "returns a #{described_class} instance" do
-      expect(procedure.create!.class).to eq(described_class)
+      expect(response.class).to eq(described_class)
     end
 
     it "sets an id" do
-      procedure.create!
-      expect(procedure.id).to eq("/procedures/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")
+      expect(response.id).to eq("/procedures/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")
     end
   end
 end

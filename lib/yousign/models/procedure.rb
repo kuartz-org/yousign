@@ -16,28 +16,14 @@ module Yousign
                 :template,
                 :workspace
 
-    def self.find(id)
-      attributes = APIRequest.get(id)
-      instance = new
-      attributes.each do |key, value|
-        instance.instance_variable_set("@#{key}", value)
-      end
-      instance
-    end
-
-    def initialize(api_request_body = {})
-      super()
-      @api_request_body = api_request_body
-    end
-
-    def create!
-      attributes = APIRequest.post("/procedures", @api_request_body)
-
-      attributes.each do |key, value|
-        instance_variable_set("@#{key}", value)
+    class << self
+      def create(api_request_body)
+        new APIRequest.post("/procedures", api_request_body)
       end
 
-      self
+      def find(id)
+        new APIRequest.get(id)
+      end
     end
 
     def members

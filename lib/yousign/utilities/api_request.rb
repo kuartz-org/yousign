@@ -25,50 +25,36 @@ module Yousign
     end
 
     def initialize(end_point)
-      @logger = Logger.new(STDOUT)
-      logger.formatter = proc do |severity, datetime, progname, msg|
-        "\e[1m\e[35mYousign - #{datetime} - #{msg}\n\e[0m"
-      end
-
       @end_point = end_point
+      initialize_logger
     end
 
     def get
-      url = URI("#{Yousign.config.base_url}#{end_point}")
-      https = Net::HTTP.new(url.host, url.port)
-      https.use_ssl = true
-      request = Net::HTTP::Get.new(url, request_headers)
-
-      logger.info "GET request to #{url.to_s}}"
-
-      response = https.request(request)
-
-      parsed_response = JSON.parse(response.body).tap do |parsed_response|
-        logger.info "Response [#{response.code}]:\n#{parsed_response}"
-      end
-
-      return parsed_response unless parsed_response.is_a? Hash
-
-      parsed_response.deep_transform_keys! do |key|
-        underscore(key).to_sym
+      send_request do |url|
+        logger.info "GET request to #{url.to_s}}"
+        Net::HTTP::Get.new(url, request_headers)
       end
     end
 
     def post(body)
-      response = request(body)
+      body.deep_transform_keys! { |key| camelize(key, false) }
 
-      parsed_response = JSON.parse(response.body).tap do |parsed_response|
-        logger.info "Response [#{response.code}]:\n#{parsed_response}"
-      end
-
-      parsed_response.deep_transform_keys! do |key|
-        underscore(key).to_sym
+      send_request do |url|
+        logger.info "POST request to #{url.to_s}}"
+        Net::HTTP::Post.new(url, request_headers).tap { |request| request.body = body.to_json }
       end
     end
 
     private
 
     attr_reader :end_point, :logger
+
+    def initialize_logger
+      @logger = Logger.new(STDOUT)
+      logger.formatter = proc do |_severity, datetime, _progname, msg|
+        "\e[1m\e[35mYousign - #{datetime} - #{msg}\n\e[0m"
+      end
+    end
 
     def request_headers
       {
@@ -77,21 +63,15 @@ module Yousign
       }.freeze
     end
 
-    def request(body)
-      url = URI("#{Yousign.config.base_url}/#{end_point}")
-      https = Net::HTTP.new(url.host, url.port)
-      https.use_ssl = true
-      request = Net::HTTP::Post.new(url, request_headers)
+    def send_request
+      url = URI("#{Yousign.config.base_url}#{end_point}")
+      https_client = Net::HTTP.new(url.host, url.port).tap { |client| client.use_ssl = true }
+      response = https_client.request(yield(url))
+      parsed_response = JSON.parse(response.body)
 
-      body.deep_transform_keys! do |key|
-       camelize(key, false)
-      end
+      return parsed_response unless parsed_response.is_a? Hash
 
-      request.body = body.to_json
-
-      logger.info "POST request to #{url.to_s}\nbody:\n#{body}"
-
-      https.request(request)
+      parsed_response.deep_transform_keys! { |key| underscore(key).to_sym }
     end
   end
 end

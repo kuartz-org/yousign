@@ -18,10 +18,7 @@ module Yousign
                 :company
 
     def self.upload(filename:, file:)
-      content = ::File.read(file)
-      attributes = APIRequest.post("/files", { name: filename, content: Base64.strict_encode64(content) })
-
-      new(attributes)
+      new APIRequest.post("/files", { name: filename, content: Base64.strict_encode64(::File.read(file)) })
     end
 
     def file_objects
