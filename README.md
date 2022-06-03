@@ -23,13 +23,16 @@ end
 
 ## Usage
 
-[Yousign api documentation](https://dev.yousign.com/)
+[📘 Yousign api documentation](https://dev.yousign.com/)
 
 ### Procedure creation
 
 ```ruby
 # Step 1 - Upload the files
-yousign_file = Yousign::File.upload(filename: "proposal.pdf", file: File.new("insurances/proposal.pdf"))
+yousign_file = Yousign::File.upload(
+  filename: "proposal.pdf",
+  file: File.new("insurances/proposal.pdf")
+)
 # => <#Yousign::File...>
 
 # Step 2 - Create the procedure
