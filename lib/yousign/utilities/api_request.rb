@@ -29,7 +29,13 @@ module Yousign
     end
 
     def initialize(end_point)
+      @request_headers = {
+        "Authorization" => "Bearer #{Yousign.config.api_key}",
+        "Content-Type" => "application/json"
+      }.freeze
+
       @end_point = end_point
+
       initialize_logger
     end
 
@@ -43,7 +49,7 @@ module Yousign
     def post(body)
       body.deep_transform_keys! { |key| camelize(key, false) }
 
-      send_request do |url|
+      send_request do
         logger.info "POST request to #{url}}"
         Net::HTTP::Post.new(url, request_headers).tap { |request| request.body = body.to_json }
       end
@@ -51,7 +57,7 @@ module Yousign
 
     private
 
-    attr_reader :end_point, :logger
+    attr_reader :end_point, :logger, :request_headers
 
     def initialize_logger
       @logger = Logger.new($stdout)
@@ -60,15 +66,8 @@ module Yousign
       end
     end
 
-    def request_headers
-      {
-        "Authorization" => "Bearer #{Yousign.config.api_key}",
-        "Content-Type" => "application/json"
-      }.freeze
-    end
-
     def send_request
-      response = https_client.request(yield(url))
+      response = https_client.request(yield)
       parsed_response = JSON.parse(response.body)
 
       return parsed_response unless parsed_response.is_a? Hash
