@@ -16,10 +16,8 @@ module Yousign
                 :template,
                 :workspace
 
-    class << self
-      def create(api_request_body)
-        new APIRequest.post("/procedures", api_request_body)
-      end
+    def self.create(api_request_body)
+      new APIRequest.post("/procedures", api_request_body)
     end
 
     def members
