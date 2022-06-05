@@ -6,8 +6,6 @@ require_relative "yousign/configuration"
 ##
 # Ruby wrapper for Yousign API
 module Yousign
-  class Error < StandardError; end
-
   def self.configure
     yield Configuration
   end

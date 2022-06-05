@@ -3,6 +3,8 @@
 require "time"
 
 module Yousign
+  ##
+  # Parent and abstract class for resources to be found at https://dev.yousign.com
   class APIResource
     TIME_ATTRIBUTES = %i[created_at updated_at finished_at expires_at].freeze
 

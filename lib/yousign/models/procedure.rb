@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Yousign
+  ##
+  # See https://dev.yousign.com/#218fcae4-41d1-44d2-87eb-6146a356af16
   class Procedure < APIResource
     attr_reader :id,
                 :created_at,

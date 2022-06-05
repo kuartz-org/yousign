@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Yousign
+  ##
+  # See https://dev.yousign.com/#c12b75be-8bf2-4feb-a2be-65074338b5c8
   class Member < APIResource
     attr_reader :id,
                 :created_at,
