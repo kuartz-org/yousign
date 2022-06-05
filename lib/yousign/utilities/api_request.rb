@@ -31,7 +31,7 @@ module Yousign
 
     def get
       send_request do |url|
-        logger.info "GET request to #{url.to_s}}"
+        logger.info "GET request to #{url}}"
         Net::HTTP::Get.new(url, request_headers)
       end
     end
@@ -40,7 +40,7 @@ module Yousign
       body.deep_transform_keys! { |key| camelize(key, false) }
 
       send_request do |url|
-        logger.info "POST request to #{url.to_s}}"
+        logger.info "POST request to #{url}}"
         Net::HTTP::Post.new(url, request_headers).tap { |request| request.body = body.to_json }
       end
     end
@@ -50,7 +50,7 @@ module Yousign
     attr_reader :end_point, :logger
 
     def initialize_logger
-      @logger = Logger.new(STDOUT)
+      @logger = Logger.new($stdout)
       logger.formatter = proc do |_severity, datetime, _progname, msg|
         "\e[1m\e[35mYousign - #{datetime} - #{msg}\n\e[0m"
       end
@@ -64,14 +64,20 @@ module Yousign
     end
 
     def send_request
-      url = URI("#{Yousign.config.base_url}#{end_point}")
-      https_client = Net::HTTP.new(url.host, url.port).tap { |client| client.use_ssl = true }
       response = https_client.request(yield(url))
       parsed_response = JSON.parse(response.body)
 
       return parsed_response unless parsed_response.is_a? Hash
 
       parsed_response.deep_transform_keys! { |key| underscore(key).to_sym }
+    end
+
+    def url
+      @url ||= URI("#{Yousign.config.base_url}#{end_point}")
+    end
+
+    def https_client
+      @https_client ||= Net::HTTP.new(url.host, url.port).tap { |client| client.use_ssl = true }
     end
   end
 end

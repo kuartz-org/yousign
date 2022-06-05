@@ -3,7 +3,6 @@ AllCops:
   SuggestExtensions: false
   Exclude:
   - "bin/**/*"
-  # - "spec/**/*"
   - "vendor/**/*"
 
 Bundler/OrderedGems:
@@ -20,6 +19,7 @@ Metrics/AbcSize:
   CountRepeatedAttributes: false
 Metrics/BlockLength:
   IgnoredMethods: ['describe', 'context']
+  CountAsOne: ['array', 'hash', 'heredoc']
 Metrics/ClassLength:
   CountAsOne: ['array', 'hash', 'heredoc']
 Metrics/MethodLength:

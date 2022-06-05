@@ -76,8 +76,8 @@ RSpec.describe Yousign::Procedure do
           parent: nil
         }
       ],
-      "subscribers": [],
-      "files": [
+      subscribers: [],
+      files: [
         {
           id: "/files/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
           name: "The best name for my file.pdf",
