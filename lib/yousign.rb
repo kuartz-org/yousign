@@ -3,6 +3,8 @@
 require_relative "yousign/version"
 require_relative "yousign/configuration"
 
+##
+# Ruby wrapper for Yousign API
 module Yousign
   class Error < StandardError; end
 

@@ -9,7 +9,11 @@ require "active_support/inflector/inflections"
 require "active_support/core_ext/hash"
 
 module Yousign
+  ##
+  # HTTP requests to Yousign API
   class APIRequest
+    ##
+    # Identify response errors from API as APIRequest::Failure
     class Failure < StandardError; end
 
     include ActiveSupport::Inflector
