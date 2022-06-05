@@ -3,19 +3,21 @@
 module Yousign
   class File < APIResource
     attr_reader :id,
-                :name,
-                :type,
+                :created_at,
+                :updated_at,
+                :company,
                 :content_type,
-                :description,
-                :sha256,
-                :metadata,
-                :workspace,
                 :creator,
-                :protected,
-                :position,
-                :parent,
+                :description,
                 :fields_compatible,
-                :company
+                :metadata,
+                :name,
+                :parent,
+                :position,
+                :protected,
+                :sha256,
+                :type,
+                :workspace
 
     def self.upload(filename:, file:)
       new APIRequest.post("/files", { name: filename, content: Base64.strict_encode64(::File.read(file)) })

@@ -3,6 +3,10 @@
 module Yousign
   class Procedure < APIResource
     attr_reader :id,
+                :created_at,
+                :updated_at,
+                :finished_at,
+                :expires_at,
                 :config,
                 :creator_first_name,
                 :creator_last_name,

@@ -3,6 +3,9 @@
 module Yousign
   class Member < APIResource
     attr_reader :id,
+                :created_at,
+                :updated_at,
+                :finished_at,
                 :comment,
                 :contact,
                 :email,

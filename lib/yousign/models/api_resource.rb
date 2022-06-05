@@ -4,30 +4,19 @@ require "time"
 
 module Yousign
   class APIResource
+    TIME_ATTRIBUTES = %i[created_at updated_at finished_at expires_at].freeze
+
     def self.find(id)
       new APIRequest.get(id)
     end
 
     def initialize(attributes = {})
       attributes.each do |key, value|
+        next if value.nil?
+
+        value = Time.parse(value) if TIME_ATTRIBUTES.include? key
         instance_variable_set("@#{key}", value)
       end
-    end
-
-    def created_at
-      Time.parse(@created_at) if @created_at
-    end
-
-    def updated_at
-      Time.parse(@updated_at) if @updated_at
-    end
-
-    def finished_at
-      Time.parse(@finished_at) if @finished_at
-    end
-
-    def expires_at
-      Time.parse(@expires_at) if @expires_at
     end
   end
 end
