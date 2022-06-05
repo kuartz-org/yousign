@@ -12,6 +12,7 @@ module Yousign
                 :creator,
                 :description,
                 :fields_compatible,
+                :file_objects,
                 :metadata,
                 :name,
                 :parent,
@@ -23,10 +24,6 @@ module Yousign
 
     def self.upload(filename:, file:)
       new APIRequest.post("/files", { name: filename, content: Base64.strict_encode64(::File.read(file)) })
-    end
-
-    def file_objects
-      @file_objects.map { |file_object| FileObject.new(file_object) }
     end
 
     def binary

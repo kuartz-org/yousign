@@ -140,4 +140,34 @@ RSpec.describe Yousign::Procedure do
       expect(response.id).to eq("/procedures/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")
     end
   end
+
+  describe "#members" do
+    let(:procedure) do
+      Yousign::Procedure.create(
+        name: "My first procedure",
+        description: "Awesome! Here is the description of my first procedure",
+        members: [
+          {
+            firstname: "John",
+            lastname: "Doe",
+            email: "john.doe@yousign.fr",
+            phone: "+33612345678",
+            file_objects: [
+              {
+                file: "/files/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+                page: 2,
+                position: "230,499,464,589",
+                mention: "Read and approved",
+                mention2: "Signed by John Doe"
+              }
+            ]
+          }
+        ]
+      )
+    end
+
+    it "displays members as instance of Member" do
+      expect(procedure.members.first.class).to eq(Yousign::Member)
+    end
+  end
 end

@@ -12,6 +12,7 @@ module Yousign
                 :contact,
                 :email,
                 :fields,
+                :file_objects,
                 :firstname,
                 :lastname,
                 :notifications_email,
@@ -25,9 +26,5 @@ module Yousign
                 :status,
                 :type,
                 :user
-
-    def file_objects
-      @file_objects.map { |file_object| FileObject.new(file_object) }
-    end
   end
 end
