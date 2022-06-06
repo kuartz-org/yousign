@@ -32,5 +32,10 @@ module Yousign
     def signable_procedure_url
       URI("#{Yousign.config.webapp_url}/procedure/sign?members=#{id}").to_s
     end
+
+    def proof
+      base64_encoded_file = APIRequest.get("#{id}/proof?format=pdf")
+      Base64.strict_decode64(base64_encoded_file)
+    end
   end
 end
