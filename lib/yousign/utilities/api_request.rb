@@ -40,8 +40,8 @@ module Yousign
     end
 
     def get
-      send_request do |url|
-        logger.info "GET request to #{url}}"
+      send_request do
+        logger.info "GET request to #{url}"
         Net::HTTP::Get.new(url, request_headers)
       end
     end
@@ -50,7 +50,7 @@ module Yousign
       body.deep_transform_keys! { |key| camelize(key, false) }
 
       send_request do
-        logger.info "POST request to #{url}}"
+        logger.info "POST request to #{url}"
         Net::HTTP::Post.new(url, request_headers).tap { |request| request.body = body.to_json }
       end
     end
