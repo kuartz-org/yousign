@@ -27,7 +27,9 @@ module Yousign
                 :type,
                 :user
 
-    def signable_document_url
+    ##
+    # URL for the member to sign a procedure
+    def signable_procedure_url
       URI("#{Yousign.config.webapp_url}/procedure/sign?members=#{id}").to_s
     end
   end
