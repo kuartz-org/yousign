@@ -68,7 +68,10 @@ module Yousign
 
     def send_request
       response = https_client.request(yield)
+
       parsed_response = JSON.parse(response.body)
+
+      raise Failure, parsed_response["detail"] if parsed_response["detail"]
 
       return parsed_response unless parsed_response.is_a? Hash
 
