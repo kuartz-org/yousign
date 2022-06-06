@@ -26,5 +26,9 @@ module Yousign
                 :status,
                 :type,
                 :user
+
+    def signable_document_url
+      URI("#{Yousign.config.webapp_url}/procedure/sign?members=#{id}").to_s
+    end
   end
 end

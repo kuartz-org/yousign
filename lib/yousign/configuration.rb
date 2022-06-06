@@ -12,11 +12,12 @@ module Yousign
   # See https://dev.yousign.com for more information.
   module Configuration
     class << self
-      attr_accessor :api_key, :base_url
+      attr_accessor :api_key, :base_url, :webapp_url
     end
 
     DEFAULT = {
-      base_url: "https://staging-api.yousign.com"
+      base_url: "https://staging-api.yousign.com",
+      webapp_url: "https://staging-webapp.yousign.com"
     }.freeze
 
     DEFAULT.each do |param, default_value|
