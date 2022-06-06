@@ -30,5 +30,13 @@ module Yousign
       base64_encoded_file = APIRequest.get("#{id}/download")
       Base64.strict_decode64(base64_encoded_file)
     end
+
+    def layout
+      @layout ||= APIRequest.get("#{id}/layout")
+    end
+
+    def pages_count
+      layout[:pages]&.size || 0
+    end
   end
 end
