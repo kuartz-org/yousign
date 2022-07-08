@@ -18,6 +18,11 @@ For Rails:
 
 Yousign.configure do |config|
   config.api_key = Rails.application.credentials.yousign[:api_key]
+
+  if Rails.env.production?
+    config.base_url = "https://api.yousign.com"
+    config.webapp_url = "https://webapp.yousign.com"
+  end
 end
 ```
 

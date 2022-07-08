@@ -14,7 +14,7 @@ module Yousign
   class APIRequest
     ##
     # Identify response errors from API as APIRequest::Failure
-    class Failure < StandardError; end
+    Failure = Class.new(StandardError)
 
     include ActiveSupport::Inflector
 

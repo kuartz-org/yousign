@@ -6,8 +6,13 @@ module Yousign
   #
   # `base_url` depends on the desired environment.
   # Available environments:
-  # Staging:    https://staging-api.yousign.com
+  # Staging:    https://staging-api.yousign.com (default)
   # Production: https://api.yousign.com
+  #
+  # `webapp_url` depends on the desired environment.
+  # Available environments:
+  # Staging:    https://staging-app.yousign.com (default)
+  # Production: https://webapp.yousign.com
   #
   # See https://dev.yousign.com for more information.
   module Configuration
